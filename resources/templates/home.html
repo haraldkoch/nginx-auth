@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="jumbotron">
+<div>
     <h1>Welcome to auth</h1>
-    <p>Time to start building your site!</p>
-    <p><a class="btn btn-primary btn-lg" href="http://luminusweb.net">Learn more &raquo;</a></p>
-  </div>
-
-  <div class="row">
-    <div class="span12">
-    {{docs|markdown}}
-    </div>
-  </div>
+    <ul>
+        <li><a href="login">login</a></li>
+        <li><a href="private">private</a></li>
+        <li><a href="logout">logout</a></li>
+    </ul>
+</div>
 {% endblock %}

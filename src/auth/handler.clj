@@ -1,7 +1,7 @@
 (ns auth.handler
   (:require [compojure.core :refer [defroutes routes wrap-routes]]
             [auth.layout :refer [error-page]]
-            [auth.routes.home :refer [home-routes]]
+            [auth.routes.home :refer [home-routes base-routes]]
             [auth.middleware :as middleware]
             [auth.db.core :as db]
             [compojure.route :as route]
@@ -41,10 +41,13 @@
 
 (def app-routes
   (routes
-    (wrap-routes #'home-routes middleware/wrap-csrf)
+    (-> home-routes
+        (wrap-routes middleware/wrap-csrf)
+        (wrap-routes middleware/wrap-restricted))
+    base-routes
     (route/not-found
       (:body
         (error-page {:status 404
-                     :title "page not found"})))))
+                     :title  "page not found"})))))
 
 (def app (middleware/wrap-base #'app-routes))
