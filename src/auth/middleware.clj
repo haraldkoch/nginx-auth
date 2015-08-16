@@ -62,7 +62,7 @@
 
 (defn on-error [request response]
   (error-page
-    {:status 403
+    {:status 401
      :title (str "Access to " (:uri request) " is not authorized")}))
 
 (defn wrap-restricted [handler]

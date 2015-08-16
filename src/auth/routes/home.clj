@@ -48,12 +48,15 @@
         found-password (get authdata (keyword username))]
     (if (and found-password (= found-password password))
       (do (println "login successful")
-          (let [next-url (get-in request [:query-params :next] "/private")
+          (let [next-url (get-in request [:headers :x-target] "/private")
                 updated-session (assoc session :identity (keyword username))]
             (println updated-session)
             (-> (redirect next-url)
                 (assoc :session updated-session))))
-      (layout/render "login.html" request))))
+      (layout/error-page
+        {:status  403
+         :title   "login failed"
+         :message "The username or password entered is incorrect"}))))
 
 ; unrestricted access
 (defroutes base-routes
