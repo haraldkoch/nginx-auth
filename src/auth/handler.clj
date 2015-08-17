@@ -41,13 +41,11 @@
 
 (def app-routes
   (routes
-    (-> home-routes
-        (wrap-routes middleware/wrap-csrf)
-        (wrap-routes middleware/wrap-restricted))
-    base-routes
+    (wrap-routes home-routes middleware/wrap-restricted)
+    (wrap-routes #'base-routes middleware/wrap-csrf)
     (route/not-found
       (:body
         (error-page {:status 404
-                     :title  "page not found"})))))
+                     :title "page not found"})))))
 
 (def app (middleware/wrap-base #'app-routes))
