@@ -25,7 +25,7 @@
                            :backlog 10})}})
 
   (if (env :dev) (parser/cache-off!))
-  (db/connect!)
+  ;(db/connect!)
   (timbre/info (str
                  "\n-=[auth started successfully"
                  (when (env :dev) " using the development profile")
@@ -36,13 +36,14 @@
    shuts down, put any clean up code here"
   []
   (timbre/info "auth is shutting down...")
-  (db/disconnect!)
+  ; (db/disconnect!)
   (timbre/info "shutdown complete!"))
 
 (def app-routes
   (routes
     (wrap-routes home-routes middleware/wrap-restricted)
-    (wrap-routes #'base-routes middleware/wrap-csrf)
+    ;(wrap-routes #'base-routes middleware/wrap-csrf)
+    base-routes
     (route/not-found
       (:body
         (error-page {:status 404

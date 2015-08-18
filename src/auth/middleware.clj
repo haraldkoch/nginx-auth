@@ -1,10 +1,12 @@
 (ns auth.middleware
   (:require [auth.layout :refer [*app-context* error-page]]
+            [clojure.pprint :refer [pprint]]
             [taoensso.timbre :as timbre]
             [environ.core :refer [env]]
             [selmer.middleware :refer [wrap-error-page]]
             [prone.middleware :refer [wrap-exceptions]]
             [ring-ttl-session.core :refer [ttl-memory-store]]
+            [ring.middleware.session.cookie :refer [cookie-store]]
             [ring.middleware.reload :as reload]
             [ring.middleware.webjars :refer [wrap-webjars]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
@@ -15,6 +17,14 @@
             [buddy.auth.accessrules :refer [restrict]]
             [buddy.auth :refer [authenticated?]]
             [auth.layout :refer [*identity*]]))
+
+; FIXME maybe include this inside wrap-dev instead?
+(defn wrap-logger [handler]
+  (fn [request]
+    (if (env :dev)
+      (let [response (handler request)]
+        (pprint {:request request :response response})
+        response))))
 
 (defn wrap-context [handler]
   (fn [request]
@@ -82,12 +92,14 @@
 (defn wrap-base [handler]
   (-> handler
       wrap-dev
+      wrap-logger
       wrap-auth
       wrap-formats
       wrap-webjars
       (wrap-defaults
         (-> site-defaults
             (assoc-in [:security :anti-forgery] false)
-            (assoc-in  [:session :store] (ttl-memory-store (* 60 30)))))
+            (assoc-in [:session :store] (cookie-store {:key "pppY8cjjWgocEK15"}))
+            (assoc-in [:session :cookie-name] "auth-app-sesion")))
       wrap-context
       wrap-internal-error))

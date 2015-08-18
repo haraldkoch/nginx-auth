@@ -5,21 +5,18 @@
             [ring.util.http-response :refer [ok]]
             [clojure.java.io :as io]))
 
-(defn home-page []
+(defn home-page [request]
   (layout/render
-    "home.html" {:docs (-> "docs/docs.md" io/resource slurp)}))
+    "home.html" {:docs     (-> "docs/docs.md" io/resource slurp)
+                 :target   (get-in request [:headers "x-target"])
+                 :identity (get-in request [:session :identity])}))
 
-(defn about-page []
-  (layout/render "about.html"))
+(defn private-page [request]
+  (println "private page requested: identity is " (get-in request [:session :identity]))
+  (layout/render "private.html" {:identity (get-in request [:session :identity])}))
 
-(defn login [request]
-  (layout/render "login.html"))
-
-(defn private-page []
-  (layout/render "private.html"))
-
-(defn logout [request]
-  (-> (redirect "/login")
+(defn logout []
+  (-> (redirect "/")
       (assoc :session {})))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -48,7 +45,7 @@
         found-password (get authdata (keyword username))]
     (if (and found-password (= found-password password))
       (do (println "login successful")
-          (let [next-url (get-in request [:headers :x-target] "/private")
+          (let [next-url (get-in request [:form-params "target"] "/private")
                 updated-session (assoc session :identity (keyword username))]
             (println updated-session)
             (-> (redirect next-url)
@@ -60,13 +57,11 @@
 
 ; unrestricted access
 (defroutes base-routes
-           (GET "/" [] (home-page))
-           (GET "/about" [] (about-page))
-           (GET "/login" request (login request))
-           (POST "/login" request (login-authenticate request))
-           (GET "/logout" [] logout))
-
+           (GET "/" request (home-page request))
+           (POST "/" request (login-authenticate request))
+           (GET "/logout" [] (logout)))
+           
 ; restricted access
 (defroutes home-routes
-           (GET "/private" [] (private-page)))
+           (GET "/auth-check" request (private-page request)))
 

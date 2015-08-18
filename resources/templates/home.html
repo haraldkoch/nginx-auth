@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+
+<div class="row">
+    <div class="span12">
+        <form action="{{servlet-context}}/" method="post">
+            <input type="text" placeholder="Username:" name="username"/><br/>
+            <input type="password" placeholder="Password:" name="password"/>
+            <input type="hidden" name="target" value="{{target}}"/>
+            <input type="submit" value="Submit"/>
+        </form>
+    </div>
+</div>
+
 <div>
-    <h1>Welcome to auth</h1>
+    <h1>This is nginx-auth</h1>
+    <p>nginx-auth is a simple application designed to work with the auth_request module of nginx.</p>
+    <p>you are logged in as {{identity}}</p>
     <ul>
-        <li><a href="login">login</a></li>
+        <li><a href="login">private</a></li>
         <li><a href="private">private</a></li>
         <li><a href="logout">logout</a></li>
     </ul>
