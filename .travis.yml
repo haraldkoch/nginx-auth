@@ -1,1 +1,15 @@
 language: clojure
+env:
+  global:
+  - secure: lR6Bgvz40ZayLIpYsbICd0pz/jcr48/OnYSWTHojAm3d7ALlOZHa23q5ELyKsefQpWvWI8Buj2YbKz2uELK8DP3z/iag5Z6XYhAM6in2W724yNq0VT2q3K7Rd5pc2TauthM93J2uNqAA9P3ucy1HdyvSKVFHMaKOo+5NtE1w3AYIQpK/6esQcE8glZXtIMNp9OO7dq0ENurDD0LJjs0fRqvuQMVbjwl0SkyDi8s7U6XosCEio7cux2B6/GO/yAXMQ5bfnkp6LCMUDSMUOXXtZqx7+V1RT7CMzzOeeX4a7hYsy+JoqXr1Rlvyjx0/188Doa5HwEiB7b8yq7wuKD8xoGVPF5lRoWQCJYbz4/aH0yY2Jo9jn2KBqO/2Bv7DeDuwCp2HCLEBguzyyOykSlXSbJ22X9vOWLJTN4GgYem3piGmmpGAdmsQDnPnMMG4EwReMPCcPTYPIk6IcfkaZDFx28SWx8W5A8iKptEC87B19qAM2pvLFPFPrXH9v2U1r5ejfLbW4BKNLEv70lfWAZqZtttArELmWGVPSK3z8MFDPPK610DjXhp2svvwQkvqtVv+xXqTH3RRZtyCLiOsuH4hMMMGuDtsX1YN91p0YUJuIlVWIRW7+K6wGfGJtbqV7THLvpIHbN+RtcZhowZm/ydrLtP2JBRwsENea4vxpmbipGs=
+before_install:
+- openssl aes-256-cbc -K $encrypted_3d8a1c41107e_key -iv $encrypted_3d8a1c41107e_iv
+  -in .travis/deploy_key.pem.enc -out .travis/deploy_key.pem -d
+
+after_success:
+  - lein uberjar
+  - chmod 600 .travis/deploy_key.pem
+  - ssh-add .travis/deploy_key.pem
+  - scp target/auth.jar penelope.cfrq.net:/var/tmp/auth.jar
+
+sudo: false
