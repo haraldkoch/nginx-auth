@@ -7,5 +7,5 @@ before_install:
 after_success:
 - lein uberjar
 - chmod 600 .travis/deploy_key.pem
-- scp -i .travis/deploy_key.pem target/auth.jar travis-ci@penelope.cfrq.net:/var/tmp/auth.jar
+- scp -i .travis/deploy_key.pem -P 1988 target/auth.jar travis-ci@penelope.cfrq.net:/var/tmp/auth.jar
 sudo: false
