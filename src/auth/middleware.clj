@@ -1,5 +1,5 @@
 (ns auth.middleware
-  (:require [auth.layout :refer [*app-context* error-page]]
+  (:require [auth.layout :refer [*identity* *app-context* error-page]]
             [clojure.pprint :refer [pprint]]
             [taoensso.timbre :as timbre]
             [environ.core :refer [env]]
@@ -15,8 +15,8 @@
             [buddy.auth.middleware :refer [wrap-authentication]]
             [buddy.auth.backends.session :refer [session-backend]]
             [buddy.auth.accessrules :refer [restrict]]
-            [buddy.auth :refer [authenticated?]]
-            [auth.layout :refer [*identity*]]))
+            [buddy.auth :refer [authenticated?]])
+  (:import (javax.servlet ServletContext)))
 
 ; FIXME maybe include this inside wrap-dev instead?
 (defn wrap-logger [handler]
@@ -33,7 +33,7 @@
                 ;; If we're not inside a servlet environment
                 ;; (for example when using mock requests), then
                 ;; .getContextPath might not exist
-                (try (.getContextPath context)
+                (try (.getContextPath ^ServletContext context)
                      (catch IllegalArgumentException _ context))
                 ;; if the context is not specified in the request
                 ;; we check if one has been specified in the environment
@@ -59,18 +59,10 @@
         wrap-exceptions)
     handler))
 
-(defn wrap-csrf [handler]
-  (wrap-anti-forgery
-    handler
-    {:error-response
-     (error-page
-       {:status 403
-        :title "Invalid anti-forgery token"})}))
-
 (defn wrap-formats [handler]
   (wrap-restful-format handler {:formats [:json-kw :transit-json :transit-msgpack]}))
 
-(defn on-error [request response]
+(defn on-error [request _]
   (error-page
     {:status 401
      :title (str "Access to " (:uri request) " is not authorized")}))

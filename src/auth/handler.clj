@@ -3,7 +3,6 @@
             [auth.layout :refer [error-page]]
             [auth.routes.home :refer [home-routes base-routes]]
             [auth.middleware :as middleware]
-            [auth.db.core :as db]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.3rd-party.rotor :as rotor]
@@ -25,7 +24,6 @@
                            :backlog 10})}})
 
   (if (env :dev) (parser/cache-off!))
-  ;(db/connect!)
   (timbre/info (str
                  "\n-=[auth started successfully"
                  (when (env :dev) " using the development profile")
@@ -35,14 +33,11 @@
   "destroy will be called when your application
    shuts down, put any clean up code here"
   []
-  (timbre/info "auth is shutting down...")
-  ; (db/disconnect!)
   (timbre/info "shutdown complete!"))
 
 (def app-routes
   (routes
     (wrap-routes home-routes middleware/wrap-restricted)
-    ;(wrap-routes #'base-routes middleware/wrap-csrf)
     base-routes
     (route/not-found
       (:body

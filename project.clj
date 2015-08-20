@@ -26,7 +26,10 @@
                  [migratus "0.8.2"]
                  [conman "0.1.6"]
                  [mysql/mysql-connector-java "5.1.34"]
-                 [org.immutant/web "2.0.2"]]
+                 [org.immutant/web "2.0.2"]
+
+                 ; local additions
+                 [clj-http "2.0.0"]]
 
   :min-lein-version "2.0.0"
   :uberjar-name "auth.jar"
