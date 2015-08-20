@@ -1,8 +1,8 @@
-(ns auth.handler
+(ns nginx-auth.handler
   (:require [compojure.core :refer [defroutes routes wrap-routes]]
-            [auth.layout :refer [error-page]]
-            [auth.routes.home :refer [home-routes base-routes]]
-            [auth.middleware :as middleware]
+            [nginx-auth.layout :refer [error-page]]
+            [nginx-auth.routes.home :refer [home-routes base-routes]]
+            [nginx-auth.middleware :as middleware]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.3rd-party.rotor :as rotor]
@@ -19,13 +19,13 @@
   (timbre/merge-config!
     {:level     (if (env :dev) :trace :info)
      :appenders {:rotor (rotor/rotor-appender
-                          {:path "auth.log"
+                          {:path "nginx-auth.log"
                            :max-size (* 512 1024)
                            :backlog 10})}})
 
   (if (env :dev) (parser/cache-off!))
   (timbre/info (str
-                 "\n-=[auth started successfully"
+                 "\n-=[nginx-auth started successfully"
                  (when (env :dev) " using the development profile")
                  "]=-")))
 

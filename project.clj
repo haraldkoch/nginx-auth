@@ -1,7 +1,7 @@
-(defproject auth "0.1.0-SNAPSHOT"
+(defproject nginx-auth "0.1.0-SNAPSHOT"
 
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "a simple authentication service for use with the nginx auth_request module."
+  :url "https://github.com/haraldkoch/nginx-auth"
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [selmer "0.8.8"]
@@ -27,18 +27,18 @@
                  [clj-http "2.0.0"]]
 
   :min-lein-version "2.0.0"
-  :uberjar-name "auth.jar"
+  :uberjar-name "nginx-auth.jar"
   :jvm-opts ["-server"]
 
-  :main auth.core
+  :main nginx-auth.core
 
   :plugins [[lein-environ "1.0.0"]
             [lein-ring "0.9.6"]]
   :ring
-  {:handler auth.handler/app
-   :init auth.handler/init
-   :destroy auth.handler/destroy
-   :uberwar-name "auth.war"}
+  {:handler nginx-auth.handler/app
+   :init nginx-auth.handler/init
+   :destroy nginx-auth.handler/destroy
+   :uberwar-name "nginx-auth.war"}
   
   :profiles
   {:uberjar {:omit-source true
@@ -52,7 +52,7 @@
                                  [mvxcvi/puget "0.8.1"]]
                   
                   
-                  :repl-options {:init-ns auth.core}
+                  :repl-options {:init-ns nginx-auth.core}
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]
                   ;;when :nrepl-port is set the application starts the nREPL server on load

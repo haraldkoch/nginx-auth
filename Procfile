@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/auth.jar clojure.main -m auth.core
+web: java $JVM_OPTS -cp target/nginx-auth.jar clojure.main -m nginx-auth.core

@@ -1,5 +1,5 @@
-(ns auth.routes.home
-  (:require [auth.layout :as layout]
+(ns nginx-auth.routes.home
+  (:require [nginx-auth.layout :as layout]
             [compojure.core :refer [defroutes GET POST]]
             [ring.util.response :refer [response redirect content-type]]
             [ring.util.http-response :refer [ok]]

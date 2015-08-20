@@ -1,5 +1,5 @@
-(ns auth.core
-  (:require [auth.handler :refer [app init destroy]]
+(ns nginx-auth.core
+  (:require [nginx-auth.handler :refer [app init destroy]]
             [immutant.web :as immutant]
             [clojure.tools.nrepl.server :as nrepl]
             [taoensso.timbre :as timbre]

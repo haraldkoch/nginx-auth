@@ -1,4 +1,4 @@
-# auth
+# nginx-auth
 
 nginx-auth is a simple form-based authentication server designed to be used with
 the auth_request plugin of nginx. It allows you to use form-based authentication

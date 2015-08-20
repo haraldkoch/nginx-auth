@@ -1,7 +1,7 @@
-(ns auth.test.handler
+(ns nginx-auth.test.handler
   (:require [clojure.test :refer :all]
             [ring.mock.request :refer :all]
-            [auth.handler :refer :all]))
+            [nginx-auth.handler :refer :all]))
 
 (deftest test-app
   (testing "main route"

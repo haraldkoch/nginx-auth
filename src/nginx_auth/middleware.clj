@@ -1,5 +1,5 @@
-(ns auth.middleware
-  (:require [auth.layout :refer [*identity* *app-context* error-page]]
+(ns nginx-auth.middleware
+  (:require [nginx-auth.layout :refer [*identity* *app-context* error-page]]
             [clojure.pprint :refer [pprint]]
             [taoensso.timbre :as timbre]
             [environ.core :refer [env]]

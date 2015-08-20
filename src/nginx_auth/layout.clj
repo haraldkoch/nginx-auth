@@ -1,4 +1,4 @@
-(ns auth.layout
+(ns nginx-auth.layout
   (:require [selmer.parser :as parser]
             [selmer.filters :as filters]
             [markdown.core :refer [md-to-html-string]]
