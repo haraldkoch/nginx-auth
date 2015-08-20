@@ -21,10 +21,9 @@
 ; FIXME maybe include this inside wrap-dev instead?
 (defn wrap-logger [handler]
   (fn [request]
-    (if (env :dev)
       (let [response (handler request)]
         (pprint {:request request :response response})
-        response))))
+        response)))
 
 (defn wrap-context [handler]
   (fn [request]
@@ -56,7 +55,8 @@
     (-> handler
         reload/wrap-reload
         wrap-error-page
-        wrap-exceptions)
+        wrap-exceptions
+        wrap-logger)
     handler))
 
 (defn wrap-formats [handler]
