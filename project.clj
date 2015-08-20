@@ -6,7 +6,6 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [selmer "0.8.8"]
                  [com.taoensso/timbre "4.1.0"]
-                 [com.taoensso/tower "3.0.2"]
                  [markdown-clj "0.9.68"]
                  [environ "1.0.0"]
                  [compojure "1.4.0"]
@@ -17,15 +16,11 @@
                   :exclusions [ring/ring-jetty-adapter]]
                  [metosin/ring-middleware-format "0.6.0"]
                  [metosin/ring-http-response "0.6.3"]
-                 [bouncer "0.3.3"]
                  [prone "0.8.2"]
                  [org.clojure/tools.nrepl "0.2.10"]
                  [org.webjars/bootstrap "3.3.5"]
                  [org.webjars/jquery "2.1.4"]
                  [buddy "0.6.1"]
-                 [migratus "0.8.2"]
-                 [conman "0.1.6"]
-                 [mysql/mysql-connector-java "5.1.34"]
                  [org.immutant/web "2.0.2"]
 
                  ; local additions
@@ -36,10 +31,8 @@
   :jvm-opts ["-server"]
 
   :main auth.core
-  :migratus {:store :database}
 
   :plugins [[lein-environ "1.0.0"]
-            [migratus-lein "0.1.5"]
             [lein-ring "0.9.6"]]
   :ring
   {:handler auth.handler/app
