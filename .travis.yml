@@ -1,5 +1,7 @@
 language: clojure
 sudo: false
+addons:
+  ssh_known_hosts: penelope.cfrq.net
 env:
   global: 
 before_install:
@@ -8,5 +10,5 @@ before_install:
 after_success:
 - lein uberjar
 - chmod 600 .travis/deploy_key.pem
-- scp -i .travis/deploy_key.pem -P 1988 -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" target/nginx-auth.jar travis-ci@penelope.cfrq.net:/var/tmp/nginx-auth.jar
-- ssh -i .travis/deploy_key.pem -p 1988 -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" travis-ci@penelope.cfrq.net /opt/nginx-auth/update-from-travis
+- scp -i .travis/deploy_key.pem -P 1988 target/nginx-auth.jar travis-ci@penelope.cfrq.net:/var/tmp/nginx-auth.jar
+- ssh -i .travis/deploy_key.pem -p 1988 travis-ci@penelope.cfrq.net /opt/nginx-auth/update-from-travis
