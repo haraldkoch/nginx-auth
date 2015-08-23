@@ -8,6 +8,6 @@ before_install:
 after_success:
 - lein uberjar
 - chmod 600 .travis/deploy_key.pem
-- ssh-keyscan -t rsa,dsa,ecdsa,ed25519 -H  -p 1988 penelope.cfrq.net 2>&1 | tee -a $HOME/.ssh/known_hosts
+- ssh-keyscan -t rsa,dsa,ecdsa -H -p 1988 penelope.cfrq.net 2>&1 | tee -a $HOME/.ssh/known_hosts
 - scp -i .travis/deploy_key.pem -P 1988 target/nginx-auth.jar travis-ci@penelope.cfrq.net:/var/tmp/nginx-auth.jar
 - ssh -i .travis/deploy_key.pem -p 1988 travis-ci@penelope.cfrq.net /opt/nginx-auth/update-from-travis
