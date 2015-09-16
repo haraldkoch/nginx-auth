@@ -32,7 +32,7 @@
              (reset! nrepl-server))
         (timbre/info "nREPL server started on port" port)
         (catch Throwable t
-          (timbre/error "failed to start nREPL" t))))))
+          (timbre/error t "failed to start nREPL"))))))
 
 (defn http-port [port]
   (parse-port (or port (env :port) 3000)))
@@ -51,7 +51,8 @@
 
 (defn stop-app []
   (stop-nrepl)
-  (stop-http-server))
+  (stop-http-server)
+  (shutdown-agents))
 
 (defn start-app [[port]]
   (.addShutdownHook (Runtime/getRuntime) (Thread. stop-app))

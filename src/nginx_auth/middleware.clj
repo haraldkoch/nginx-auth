@@ -5,7 +5,6 @@
             [environ.core :refer [env]]
             [selmer.middleware :refer [wrap-error-page]]
             [prone.middleware :refer [wrap-exceptions]]
-            [ring-ttl-session.core :refer [ttl-memory-store]]
             [ring.middleware.session.cookie :refer [cookie-store]]
             [ring.middleware.reload :as reload]
             [ring.middleware.webjars :refer [wrap-webjars]]
